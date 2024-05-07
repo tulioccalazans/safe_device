@@ -11,7 +11,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool isJailBroken = false;
-  bool isMockLocation = false;
+  //bool isMockLocation = false;
   bool isRealDevice = true;
   bool isOnExternalStorage = false;
   bool isSafeDevice = false;
@@ -24,15 +24,15 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initPlatformState() async {
-    await Permission.location.request();
-    if (await Permission.location.isPermanentlyDenied) {
-      openAppSettings();
-    }
+    // await Permission.location.request();
+    // if (await Permission.location.isPermanentlyDenied) {
+    //   openAppSettings();
+    // }
 
     if (!mounted) return;
     try {
       isJailBroken = await SafeDevice.isJailBroken;
-      isMockLocation = await SafeDevice.isMockLocation;
+      //isMockLocation = await SafeDevice.isMockLocation;
       isRealDevice = await SafeDevice.isRealDevice;
       isOnExternalStorage = await SafeDevice.isOnExternalStorage;
       isSafeDevice = await SafeDevice.isSafeDevice;
@@ -71,22 +71,22 @@ class _MyAppState extends State<MyApp> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('isMockLocation():'),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        '${isMockLocation ? "Yes" : "No"}',
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
+                  // SizedBox(
+                  //   height: 8,
+                  // ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: <Widget>[
+                  //     Text('isMockLocation():'),
+                  //     SizedBox(
+                  //       width: 8,
+                  //     ),
+                  //     Text(
+                  //       '${isMockLocation ? "Yes" : "No"}',
+                  //       style: TextStyle(fontWeight: FontWeight.w600),
+                  //     ),
+                  //   ],
+                  // ),
                   SizedBox(
                     height: 8,
                   ),
