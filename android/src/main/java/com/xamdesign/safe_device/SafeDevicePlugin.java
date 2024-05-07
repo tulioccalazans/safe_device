@@ -7,11 +7,11 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-//import com.xamdesign.safe_device.DevelopmentMode.DevelopmentModeCheck;
-//import com.xamdesign.safe_device.Emulator.EmulatorCheck;
-//import com.xamdesign.safe_device.ExternalStorage.ExternalStorageCheck;
+import com.xamdesign.safe_device.DevelopmentMode.DevelopmentModeCheck;
+import com.xamdesign.safe_device.Emulator.EmulatorCheck;
+import com.xamdesign.safe_device.ExternalStorage.ExternalStorageCheck;
 //import com.xamdesign.safe_device.MockLocation.LocationAssistant;
-//import com.xamdesign.safe_device.Rooted.RootedCheck;
+import com.xamdesign.safe_device.Rooted.RootedCheck;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
