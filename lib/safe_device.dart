@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-// import 'package:trust_location/trust_location.dart';
 
 class SafeDevice {
   static const MethodChannel _channel = const MethodChannel('safe_device');
@@ -14,13 +13,14 @@ class SafeDevice {
   }
 
   //Can this device mock location - no need to root!
-  // static Future<bool> get canMockLocation async {
-  //   if (Platform.isAndroid) {
-  //     return await TrustLocation.isMockLocation;
-  //   } else {
-  //     return !await isRealDevice || await isJailBroken;
-  //   }
-  // }
+  static Future<bool> get isMockLocation async {
+    if (Platform.isAndroid) {
+      final bool isMockLocation = await _channel.invokeMethod('isMockLocation');
+      return isMockLocation;
+    } else {
+      return !await isRealDevice || await isJailBroken;
+    }
+  }
 
   // Checks whether device is real or emulator
   static Future<bool> get isRealDevice async {
@@ -37,27 +37,36 @@ class SafeDevice {
 
   // Check if device violates any of the above
   static Future<bool> get isSafeDevice async {
-    final bool isJailBroken = await _channel.invokeMethod('isJailBroken');
-    final bool isRealDevice = await _channel.invokeMethod('isRealDevice');
-    //final bool canMockLocation = await SafeDevice.canMockLocation;
+    final bool isJailBroken = await SafeDevice.isJailBroken;
+    final bool isRealDevice = await SafeDevice.isRealDevice;
+    final bool isMockLocation = await SafeDevice.isMockLocation;
+
     if (Platform.isAndroid) {
       final bool isOnExternalStorage =
-          await _channel.invokeMethod('isOnExternalStorage');
-      return isJailBroken ||
-              //canMockLocation ||
-              !isRealDevice ||
-              isOnExternalStorage == true
-          ? false
-          : true;
+          await _channel.invokeMethod('isOnExternalStorage') ?? false;
+
+      return !(isJailBroken ||
+          isMockLocation ||
+          !isRealDevice ||
+          isOnExternalStorage);
     } else {
-      return isJailBroken || !isRealDevice; //|| canMockLocation;
+      return !(isJailBroken || isMockLocation || !isRealDevice);
     }
   }
 
   // (ANDROID ONLY) Check if development Options is enable on device
   static Future<bool> get isDevelopmentModeEnable async {
+    if (Platform.isIOS) return false;
     final bool isDevelopmentModeEnable =
         await _channel.invokeMethod('isDevelopmentModeEnable');
     return isDevelopmentModeEnable;
+  }
+
+  // (ANDROID ONLY) Check if development Options is enable on device
+  static Future<bool> get usbDebuggingCheck async {
+    if (Platform.isIOS) return false;
+    final bool usbDebuggingCheck =
+        await _channel.invokeMethod('usbDebuggingCheck');
+    return usbDebuggingCheck;
   }
 }

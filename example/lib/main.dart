@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:location_permissions/location_permissions.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:safe_device/safe_device.dart';
 
 void main() => runApp(MyApp());
@@ -11,11 +11,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool isJailBroken = false;
-  //bool canMockLocation = false;
+  bool isMockLocation = false;
   bool isRealDevice = true;
   bool isOnExternalStorage = false;
   bool isSafeDevice = false;
   bool isDevelopmentModeEnable = false;
+
   @override
   void initState() {
     super.initState();
@@ -23,27 +24,23 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initPlatformState() async {
-    //await LocationPermissions().requestPermissions();
+    await Permission.location.request();
+    if (await Permission.location.isPermanentlyDenied) {
+      openAppSettings();
+    }
+
     if (!mounted) return;
     try {
       isJailBroken = await SafeDevice.isJailBroken;
-      //canMockLocation = await SafeDevice.canMockLocation;
+      isMockLocation = await SafeDevice.isMockLocation;
       isRealDevice = await SafeDevice.isRealDevice;
       isOnExternalStorage = await SafeDevice.isOnExternalStorage;
       isSafeDevice = await SafeDevice.isSafeDevice;
       isDevelopmentModeEnable = await SafeDevice.isDevelopmentModeEnable;
+      setState(() {});
     } catch (error) {
       print(error);
     }
-
-    setState(() {
-      isJailBroken = isJailBroken;
-      //canMockLocation = canMockLocation;
-      isRealDevice = isRealDevice;
-      isOnExternalStorage = isOnExternalStorage;
-      isSafeDevice = isSafeDevice;
-      isDevelopmentModeEnable = isDevelopmentModeEnable;
-    });
   }
 
   @override
@@ -74,22 +71,22 @@ class _MyAppState extends State<MyApp> {
                       ),
                     ],
                   ),
-                  // SizedBox(
-                  //   height: 8,
-                  // ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: <Widget>[
-                  //     Text('canMockLocation():'),
-                  //     SizedBox(
-                  //       width: 8,
-                  //     ),
-                  //     Text(
-                  //       '${canMockLocation ? "Yes" : "No"}',
-                  //       style: TextStyle(fontWeight: FontWeight.w600),
-                  //     ),
-                  //   ],
-                  // ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('isMockLocation():'),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        '${isMockLocation ? "Yes" : "No"}',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
                   SizedBox(
                     height: 8,
                   ),
