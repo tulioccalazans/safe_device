@@ -70,7 +70,7 @@ public class EmulatorCheck {
                 || "QC_Reference_Phone" == Build.BOARD && !"xiaomi".equalsIgnoreCase(Build.MANUFACTURER)
                 //bluestacks
                 || Build.MANUFACTURER.contains("Genymotion")
-                || Build.HOST.startsWith("Build")
+                //|| Build.HOST.startsWith("Build") // WARNING: 20240509 - Removed because Sony devices have "BuildHost" as "HOST" - https://github.com/ufukhawk/safe_device/issues/49
                 //MSI App Player
                 || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
                 || Build.PRODUCT == "google_sdk"
